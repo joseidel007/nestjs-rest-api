@@ -7,7 +7,7 @@ import { v4 as uuid } from 'uuid';
 @Injectable()
 export class BrandsService {
 
-  private brans: Brand[] = [{
+  private brands: Brand[] = [{
     id: uuid(),
     name: 'Toyota',
     createAt: new Date().getTime()
@@ -34,27 +34,39 @@ export class BrandsService {
       createAt: new Date().getTime()
     }
 
-    this.brans.push(newBrand);
+    this.brands.push(newBrand);
 
     return newBrand
   }
 
   findAll() {
-    return this.brans;
+    return this.brands;
   }
 
   findOne(id: string) {
-    const brand = this.brans.find( (brand) => brand.id === id )
+    const brand = this.brands.find( (brand) => brand.id === id )
     
     if(!brand) throw new NotFoundException(`Brand with id '${id}' not found`)
     return brand;
   }
 
-  update(id: number, updateBrandDto: UpdateBrandDto) {
-    return `This action updates a #${id} brand`;
+  update(id: string, updateBrandDto: UpdateBrandDto) {
+    let brandDB = this.findOne(id);
+
+    this.brands = this.brands.map( brand =>{
+
+      if(brand.id === id){ 
+        brandDB = {...brandDB,... updateBrandDto, id };
+        return brandDB;
+      }
+      return brand;
+    })
+    return brandDB;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} brand`;
+  remove(id: string) {
+    const brand = this.findOne(id);
+    this.brands = this.brands.filter( brand => brand.id !== id )
+    return brand;
   }
 }
