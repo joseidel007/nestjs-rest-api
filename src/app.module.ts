@@ -5,6 +5,8 @@ import { CarsModule } from './cars/cars.module';
 import { BrandsModule } from './brands/brands.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ClientsModule } from './clients/clients.module';
+import { CommonModule } from './common/common.module';
 
 @Module({
   imports: [
@@ -20,7 +22,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       synchronize: true,
     }),
 
-    CarsModule, BrandsModule],
+    CarsModule, BrandsModule, ClientsModule, CommonModule],
   controllers: [AppController],
   providers: [AppService],
 })
